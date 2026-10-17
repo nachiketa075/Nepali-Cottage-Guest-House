@@ -1,0 +1,182 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cormorant Garamond Variable", "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-sans: "Manrope Variable", "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --color-ivory: #f7f3ea;
+  --color-ivory-deep: #efe8da;
+  --color-paper: #fcfaf5;
+  --color-ink: #24231f;
+  --color-ink-soft: #57534a;
+  --color-line: #e2d9c7;
+  --color-line-strong: #cfc3ab;
+  --color-forest: #1f3b2f;
+  --color-forest-deep: #142a20;
+  --color-forest-soft: #2d5040;
+  --color-gold: #b8995a;
+  --color-gold-soft: #ddc99c;
+  --color-gold-ink: #7a5f2b;
+  --color-danger: #a1342a;
+
+  --text-display: clamp(2.6rem, 1.55rem + 3.9vw, 5.1rem);
+  --text-display--line-height: 1;
+  --text-h2: clamp(2.15rem, 1.55rem + 2.5vw, 3.75rem);
+  --text-h2--line-height: 1.04;
+  --text-h3: clamp(1.75rem, 1.4rem + 1.3vw, 2.5rem);
+  --text-h3--line-height: 1.08;
+  --text-lead: clamp(1.05rem, 0.98rem + 0.35vw, 1.25rem);
+  --text-lead--line-height: 1.6;
+
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  :root {
+    --focus: var(--color-forest);
+    color-scheme: light;
+  }
+  html {
+    background: var(--color-ivory);
+    color: var(--color-ink);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+  body {
+    background: var(--color-ivory);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    background: var(--color-gold-soft);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+  main > section[id],
+  main [data-anchor] {
+    scroll-margin-top: 4.5rem;
+  }
+  @media (min-width: 48rem) {
+    main > section[id],
+    main [data-anchor] {
+      scroll-margin-top: 5.5rem;
+    }
+  }
+  /* Calendar icon in date inputs */
+  input[type='date']::-webkit-calendar-picker-indicator {
+    opacity: 0.55;
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  /* Page shell: 16px side gutter on phones, wider on larger screens. */
+  .shell {
+    width: 100%;
+    max-width: 88rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+  @media (min-width: 48rem) {
+    .shell {
+      padding-inline: 2rem;
+    }
+  }
+  @media (min-width: 80rem) {
+    .shell {
+      padding-inline: 3.5rem;
+    }
+  }
+
+  .on-dark {
+    --focus: var(--color-gold-soft);
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--color-gold-ink);
+  }
+  .eyebrow::before {
+    content: '';
+    width: 1.75rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.7;
+  }
+  .on-dark .eyebrow {
+    color: var(--color-gold-soft);
+  }
+
+  .field-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+    margin-bottom: 0.4rem;
+  }
+  .field {
+    display: block;
+    width: 100%;
+    min-height: 3rem;
+    border: 1px solid var(--color-line-strong);
+    border-radius: 0.375rem;
+    background: var(--color-paper);
+    padding: 0.65rem 0.85rem;
+    font: inherit;
+    font-size: 1rem;
+    color: var(--color-ink);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .field:hover {
+    border-color: var(--color-ink-soft);
+  }
+  .field:focus-visible {
+    outline: none;
+    border-color: var(--color-forest);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-forest) 22%, transparent);
+  }
+  .field[aria-invalid='true'] {
+    border-color: var(--color-danger);
+  }
+  select.field {
+    appearance: none;
+    padding-right: 2.25rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%2357534a' stroke-width='1.5'%3E%3Cpath d='M1 1.5 6 6.5l5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.85rem center;
+  }
+  .field-error {
+    margin-top: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--color-danger);
+  }
+}
