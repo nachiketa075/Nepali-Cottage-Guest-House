@@ -144,6 +144,21 @@ price.
 19. **Guest review text.** No guest review text is reproduced. Platform terms usually forbid copying reviews; ask
     guests directly, or get permission, before quoting them.
 
+## Owner-supplied photos (added 18 Oct 2026)
+
+- **Published:** four new photos, kept as originals plus WebP at 640, 1024 and 1280 px.
+  - `building-garden-day`
+  - `building-night`
+  - `building-garden-path-rain`
+  - `garden-path-stone-cottages`
+- **Duplicates skipped:** eight more supplied photos were identical to ones already on the site. One rain photo was
+  sent twice.
+- **Not published:** one photo of a group of guests in front of the sign (862×640). It shows identifiable people and
+  is low-resolution, so it is kept in `media-review/owner-supplied/` (git-ignored) until the owner confirms the
+  guests' consent.
+- **Identity:** the building in these photos matches the Booking.com listing photos 98591794, 230048048 and
+  384036495, which is a further identity match.
+
 ## Photos found online
 
 - **Total:** 48 candidates were downloaded for owner review into `media-review/candidates/`.

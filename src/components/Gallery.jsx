@@ -20,8 +20,13 @@ const isVideo = (item) => item.type === 'video'
  */
 function layout(items, filtered) {
   const photos = items.filter((i) => !isVideo(i) && !(i.featured && !filtered) && !isPortrait(i))
-  const leftover = photos.length % 3
-  const widen = new Set(leftover === 2 || (leftover === 1 && photos.length === 1) ? photos.slice(-leftover) : [])
+  // Each featured tile after the first sits beside two stacked standard tiles.
+  const featuredCount = filtered ? 0 : items.filter((i) => i.featured).length
+  const rowPhotos = photos.slice(Math.max(0, featuredCount - 1) * 2)
+  const leftover = rowPhotos.length % 3
+  // Fill the last rows: 2 left over → two half-width tiles; 1 left over → four half-width tiles (two rows).
+  const widenCount = leftover === 2 ? 2 : leftover === 1 ? (rowPhotos.length >= 4 ? 4 : 1) : 0
+  const widen = new Set(widenCount ? rowPhotos.slice(-widenCount) : [])
   return items.map((item) => {
     if (isVideo(item)) return { item, cls: 'col-span-2 lg:col-span-3', aspect: 'aspect-video' }
     if (item.featured && !filtered) return { item, cls: 'col-span-2 row-span-2 lg:col-span-4', aspect: 'aspect-[4/3]', featured: true }

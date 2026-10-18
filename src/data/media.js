@@ -94,6 +94,38 @@ export const photos = {
     caption: 'A guest room with two single beds.',
     category: 'rooms',
   }),
+  buildingGardenDay: photo({
+    file: 'building-garden-day',
+    width: 1280,
+    height: 960,
+    alt: 'The white-and-red guest house building with curved balconies, seen along a stone-paved path between lawns and flowering plants',
+    caption: 'The guest house building at the end of the garden path.',
+    category: 'exterior',
+  }),
+  buildingNight: photo({
+    file: 'building-night',
+    width: 1280,
+    height: 960,
+    alt: 'The guest house building at night, with lit windows, a lit arched entrance and a wet stone path through the plants',
+    caption: 'The guest house at night.',
+    category: 'exterior',
+  }),
+  buildingPathRain: photo({
+    file: 'building-garden-path-rain',
+    width: 1280,
+    height: 960,
+    alt: 'A rain-wet stone path lined with potted plants leading to the arched entrance of the white-and-red guest house building',
+    caption: 'The path to the guest house after rain.',
+    category: 'garden',
+  }),
+  gardenStoneCottages: photo({
+    file: 'garden-path-stone-cottages',
+    width: 1280,
+    height: 960,
+    alt: 'A sunny stone-paved garden path between lawns, palms and small stone-built structures, with a hammock strung between posts',
+    caption: 'The garden path on a sunny day, with a hammock on the lawn.',
+    category: 'garden',
+  }),
 }
 
 /**
@@ -205,7 +237,11 @@ export const roomMedia = [
 export const gallery = [
   { ...photos.exteriorEntrance, featured: true },
   photos.gardenFromAbove,
+  { ...photos.buildingNight, featured: true },
+  photos.buildingGardenDay,
   photos.gardenPath,
+  photos.gardenStoneCottages,
+  photos.buildingPathRain,
   photos.roomDoubleArmchairs,
   photos.roomDoubleSingleWindow,
   photos.roomDoubleSingleBathroom,
@@ -218,5 +254,5 @@ export const gallery = [
 export const galleryCategories = [
   { id: 'rooms', label: 'Rooms' },
   { id: 'garden', label: 'Garden' },
-  { id: 'exterior', label: 'Entrance' },
+  { id: 'exterior', label: 'Building & entrance' },
 ]

@@ -31,7 +31,7 @@ export const property = {
     title: 'Stone, bougainvillea and a garden in Lakeside.',
     paragraphs: [
       'Nepali Cottage Guest House sits on Pahari Marga in Lakeside, Pokhara, behind a stone-built entrance draped in bougainvillea. Wendy Juice Shop, the café at the gate, serves breakfast, coffee and meals from morning to evening.',
-      'Inside, a paved path runs between two lawns, past palms and a shaded corner to sit in. Wi-Fi is free throughout, and the travel desk can help arrange tickets, flights and treks.',
+      'Inside, a paved path runs between two lawns, past palms and a hammock, to the white-and-red guest house building. Wi-Fi is free throughout, and the travel desk can help arrange tickets, flights and treks.',
     ],
   },
   // Verified highlights (see docs/research-notes.md).

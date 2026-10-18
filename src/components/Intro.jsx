@@ -19,7 +19,7 @@ export function Intro() {
           </div>
           {/* Small inset photo — larger screens only, to keep phones uncluttered */}
           <div className="absolute -bottom-10 -right-6 hidden w-[38%] overflow-hidden rounded-md border-[6px] border-ivory xl:block">
-            <ResponsiveImage image={photos.gardenPath} sizes="20vw" className="aspect-[4/3]" />
+            <ResponsiveImage image={photos.buildingGardenDay} sizes="20vw" className="aspect-[4/3]" />
           </div>
         </Reveal>
 
