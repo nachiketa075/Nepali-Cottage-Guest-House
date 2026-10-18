@@ -1,18 +1,16 @@
 /**
  * PROPERTY CONFIGURATION — the single source of truth for every fact on the site.
  *
- * Rules this file follows:
- *  - Only facts that are confirmed (or directly visible in the supplied photos)
- *    are marked as confirmed / verified.
- *  - Anything unknown is `null`, an empty array, or `confirmed: false`.
- *    Layout components hide missing details automatically, so filling a value
- *    here is all that is needed to make it appear.
- *  - Editor preview: missing details can be shown as dashed "Placeholder"
- *    notes so you can see what still needs supplying. Guests never see them.
- *    Turn preview on by adding ?preview to the URL (e.g. localhost:5173/?preview)
- *    or by setting `previewMode: true` below. Leave it false for launch.
+ * Where facts come from (details, sources and conflicts: docs/research-notes.md):
+ *  - Owner-supplied: room categories and prices, photos, videos.
+ *  - Published only when at least two independent listings agree, or when it is the
+ *    property's own listing text (checked 17 Oct 2026).
+ *  - Anything unconfirmed is `null`, an empty array, or `confirmed: false`, and the
+ *    layout hides it. Filling a value here is all that is needed to show it.
+ *
+ * Editor preview: add ?preview to the URL (or set `previewMode: true`) to see dashed
+ * "Placeholder" notes for missing details. Guests never see them.
  */
-import { photos, videos } from './media.js'
 
 export const site = {
   previewMode: false,
@@ -22,48 +20,50 @@ export const property = {
   name: 'Nepali Cottage Guest House',
   shortName: 'Nepali Cottage',
   descriptor: 'Guest House',
-  // Used for the <meta name="description"> as well as the footer.
+  locality: 'Lakeside, Pokhara',
+  country: 'Nepal',
+  // Used for the page description, structured data and the footer.
   summary:
-    'A stone-built guest house set around a leafy garden. Explore the rooms, browse the gallery and send an enquiry about your stay.',
-  heroHeadline: 'A stone-built guest house wrapped in greenery, with a garden path and simply furnished rooms.',
+    'A stone-built guest house with a garden on Pahari Marga in Lakeside, Pokhara, near Phewa Lake. Explore the rooms and send an enquiry about your stay.',
+  heroHeadline: 'A stone-built guest house with a leafy garden in Lakeside, Pokhara — near Phewa Lake.',
   intro: {
     eyebrow: 'About the guest house',
-    title: 'Stone, bougainvillea and a garden to come home to.',
+    title: 'Stone, bougainvillea and a garden in Lakeside.',
     paragraphs: [
-      'Nepali Cottage Guest House sits behind a stone-built entrance draped in bougainvillea and strung with warm lights.',
-      'The garden is laid out around a paved path between two lawns, with palms, ferns and a shaded corner to sit in.',
+      'Nepali Cottage Guest House sits on Pahari Marga in Lakeside, Pokhara, behind a stone-built entrance draped in bougainvillea. Wendy Juice Shop, the café at the gate, serves breakfast, coffee and meals from morning to evening.',
+      'Inside, a paved path runs between two lawns, past palms and a shaded corner to sit in. Wi-Fi is free throughout, and the travel desk can help arrange tickets, flights and treks.',
     ],
-    image: photos.gardenFromAbove,
   },
-  // Highlights shown in the introduction. Only things visible in the supplied photos.
+  // Verified highlights (see docs/research-notes.md).
   highlights: [
-    'Stone-built entrance with climbing bougainvillea',
-    'Garden with lawns, palms and a stone-paved path',
-    'Shaded seating within the garden',
-    'Guest rooms with ceiling fans and wood-effect floors',
+    'On Pahari Marga in Lakeside, near Phewa Lake',
+    'Garden and terrace',
+    'Café and restaurant at the gate',
+    'Free Wi-Fi throughout',
+    'Travel desk for tickets, flights and treks',
   ],
+  languages: ['English', 'Hindi'],
 }
 
 /**
- * CONTACT DETAILS
- * Call / WhatsApp / email buttons appear only when `verified: true`.
- *
- * The number below is printed on the entrance sign in the supplied photo, but
- * the sign is shared with "Wendy Juice Shop", the +977 (Nepal) country code is
- * assumed, and WhatsApp availability is unknown. Confirm, then set verified.
+ * CONTACT DETAILS — buttons appear only when `verified: true`.
+ * Phone verified for this property: Google Hotels listing, OpenStreetMap directory
+ * entry for the guest house, and the entrance sign in the owner's photo. The sign
+ * and number are shared with Wendy Juice Shop.
+ * WhatsApp: no source confirms it — keep false until the owner confirms.
  */
 export const contact = {
   phone: {
     display: '+977 985-6031094',
     tel: '+9779856031094',
-    verified: false,
+    verified: true,
   },
   whatsapp: {
     number: '9779856031094', // international format, digits only
     verified: false,
   },
   email: {
-    address: null, // e.g. 'stay@example.com'
+    address: null, // none found online; do not invent one
     verified: false,
   },
 }
@@ -71,9 +71,8 @@ export const contact = {
 /**
  * ENQUIRY SUBMISSION
  * The site is frontend-only. Set `endpoint` to a form/booking service URL that
- * accepts a JSON POST (e.g. a Formspree form or the hotel's own API) to enable
- * real submission. While null, the form validates and explains that sending is
- * not connected yet — it never pretends an enquiry was sent.
+ * accepts a JSON POST to enable real submission. While null, the form validates
+ * and explains that sending is not connected — it never pretends to have sent.
  */
 export const enquiry = {
   endpoint: null,
@@ -81,122 +80,145 @@ export const enquiry = {
 }
 
 /**
- * LOCATION — nothing is assumed. The section, nav link and map appear once
- * `address` is filled. `mapEmbedUrl` is a Google Maps "Embed a map" iframe src.
- * `directionsUrl` is generated from the address/coordinates if left null.
+ * PRICING — owner-supplied rates (override every third-party price).
+ * Currency, billing basis and inclusions are NOT confirmed. Until they are,
+ * prices show as plain amounts with `note` beside them.
+ *   currency: e.g. 'NPR'  → shown before the amount ("NPR 1,600")
+ *   basis:    e.g. 'per room per night' → shown after the amount
  */
-export const location = {
-  address: null, // e.g. ['Street', 'Area', 'City', 'Country']
-  coordinates: null, // e.g. { lat: 0, lng: 0 }
-  mapEmbedUrl: null,
-  directionsUrl: null,
-  notes: null, // e.g. 'A five-minute walk from …' — only if verified
-  // Only verified places and distances: { name: 'Place', distance: '1.2 km', note: 'optional' }
-  nearby: [],
+export const pricing = {
+  currency: null,
+  basis: null,
+  note: 'Currency, rate basis, taxes and inclusions are confirmed when the guest house replies to your enquiry.',
 }
 
 /**
- * GUEST REVIEWS — the section is hidden until at least one genuine review is added.
+ * ROOM CATEGORIES — owner-supplied names and prices.
+ * Unknown per-category details stay null (capacity, beds, size) and are hidden.
+ * `photos` / `videos`: left empty on purpose — no evidence yet ties any current
+ * photo to a category (listing photos are older and show a different décor).
+ * Room media is shown together under "Inside the rooms" (media.js → roomMedia).
+ */
+export const rooms = [
+  {
+    id: 'standard',
+    name: 'Standard Room',
+    rate: 1600,
+    description: 'The guest house’s standard category of private room.',
+    capacity: null,
+    beds: null,
+    size: null,
+    amenities: [],
+    photos: [],
+    videos: [],
+  },
+  {
+    id: 'deluxe',
+    name: 'Deluxe Room',
+    rate: 1700,
+    description: 'The guest house’s deluxe category of private room.',
+    capacity: null,
+    beds: null,
+    size: null,
+    amenities: [],
+    photos: [],
+    videos: [],
+  },
+]
+
+/**
+ * IN-ROOM FEATURES listed by both Booking.com and Agoda for the property's rooms
+ * (plus hot showers from the owner's Hostelworld text). They describe the rooms
+ * in general — not differences between categories.
+ */
+export const roomFeatures = [
+  'Private bathroom with hot shower',
+  'Free toiletries; towels and linen',
+  'Work desk and seating area',
+  'Fan',
+  'Free Wi-Fi',
+]
+
+/**
+ * LOCATION — verified (Google Hotels, Booking.com, Agoda, Hostelworld).
+ * Coordinates decoded from Google's plus code 6X65+58W (Pokhara).
+ */
+const coords = { lat: 28.210488, lng: 83.958328 }
+export const location = {
+  address: ['Pahari Marga, Da Yatra Street', 'Lakeside, Pokhara-6', 'Pokhara 33700, Nepal'],
+  coordinates: coords,
+  plusCode: '6X65+58W Pokhara',
+  mapEmbedUrl: `https://www.openstreetmap.org/export/embed.html?bbox=${coords.lng - 0.006}%2C${coords.lat - 0.004}%2C${coords.lng + 0.006}%2C${coords.lat + 0.004}&layer=mapnik&marker=${coords.lat}%2C${coords.lng}`,
+  mapLink: `https://www.openstreetmap.org/?mlat=${coords.lat}&mlon=${coords.lng}#map=18/${coords.lat}/${coords.lng}`,
+  directionsUrl: `https://www.google.com/maps/dir/?api=1&destination=${coords.lat}%2C${coords.lng}`,
+  notes: 'In the Lakeside neighbourhood (Pokhara-6), on Pahari Marga.',
+  // Straight-line distances exactly as listed by Agoda. No walking times are given.
+  nearby: [
+    { name: 'Phewa (Fewa) Lake', distance: '360 m' },
+    { name: 'Tal Barahi (Varahi) Temple', distance: '560 m' },
+    { name: 'World Peace Pagoda', distance: '1.7 km' },
+    { name: 'Gupteshwor Mahadev Cave', distance: '2.3 km' },
+    { name: 'International Mountain Museum', distance: '3.1 km' },
+  ],
+  nearbySource: {
+    label: 'Straight-line distances as listed on Agoda',
+    url: 'https://www.agoda.com/en-gb/nepali-cottage-guest-house/hotel/pokhara-np.html',
+    checked: '17 October 2026',
+  },
+}
+
+/**
+ * PLATFORM RATINGS — shown separately, never combined. Each needs the platform,
+ * scale, review count, link and the date it was checked. Update or remove when stale.
+ */
+export const ratings = [
+  {
+    platform: 'Booking.com',
+    score: 8.3,
+    scale: 10,
+    count: 172,
+    url: 'https://www.booking.com/hotel/np/nepali-cottage-guest-house.en-gb.html',
+    checked: '17 October 2026',
+  },
+  {
+    platform: 'Google',
+    score: 4.5,
+    scale: 5,
+    count: 228,
+    url: 'https://www.google.com/travel/hotels/entity/ChgInLivu_vM6YqzARoLL2cvMXdkM3RnMjMQAQ',
+    checked: '17 October 2026',
+  },
+]
+
+/**
+ * GUEST REVIEWS — hidden until genuine reviews are supplied with permission.
  * Shape: { quote, author, source, sourceUrl?, date? }
- * Copy text verbatim from the original platform and link to it where possible.
+ * Platform review text is not copied (platform terms usually forbid it).
  */
 export const reviews = []
 
 /**
- * AMENITIES
- * `confirmed: true` items are publicly shown. The ones below are physical
- * features visible in the supplied photos and videos — not services. Anything
- * that is a service (towels, linen, cleaning, breakfast …) stays unconfirmed
- * until the guest house confirms it, even if it appears in a photo. `confirmed: false` items are placeholders:
- * shown (marked as placeholders) only in preview mode, never as facts.
- * `icon` is a name from the icon map in src/components/ui/Icon.jsx.
+ * PROPERTY-WIDE FACILITIES. `confirmed: true` = at least two independent listings
+ * agree (docs/research-notes.md). `confirmed: false` = conflicting or single-source:
+ * shown only in editor preview. `icon`: see src/components/ui/Icon.jsx.
  */
 export const amenities = [
-  { icon: 'trees', title: 'Garden', text: 'Lawns, palms and ferns either side of a stone-paved path.', confirmed: true },
-  { icon: 'sofa', title: 'Garden seating', text: 'A shaded seating corner set among the plants.', confirmed: true },
-  { icon: 'fan', title: 'Ceiling fans', text: 'An overhead fan in each of the rooms pictured and filmed.', confirmed: true },
+  { icon: 'wifi', title: 'Free Wi-Fi', text: 'Free throughout the property.', confirmed: true },
+  { icon: 'trees', title: 'Garden & terrace', text: 'Lawns, palms and a stone-paved path, with a terrace and garden seating.', confirmed: true },
+  { icon: 'coffee', title: 'Café & restaurant', text: 'Wendy Juice Shop at the gate — Nepalese and international food. Ask whether breakfast is included in your rate.', confirmed: true },
+  { icon: 'bell', title: 'Room service', text: 'Food and drinks brought to your room.', confirmed: true },
+  { icon: 'map', title: 'Travel desk', text: 'Help with tickets, flights and treks.', confirmed: true },
+  { icon: 'luggage', title: 'Luggage storage', text: 'Store your bags before or after your stay.', confirmed: true },
+  { icon: 'nosmoking', title: 'Non-smoking rooms', text: 'Smoking only in the designated area.', confirmed: true },
 
-  { icon: 'towels', title: 'Towels & linen', text: 'Seen in the photos — confirm what is provided for every stay.', confirmed: false },
-
-  { icon: 'wifi', title: 'Wi-Fi', text: 'Confirm availability and coverage.', confirmed: false },
-  { icon: 'coffee', title: 'Breakfast', text: 'Confirm whether breakfast is offered and if it is included.', confirmed: false },
-  { icon: 'droplets', title: 'Hot water', text: 'Confirm hot water / showers in rooms.', confirmed: false },
-  { icon: 'car', title: 'Parking', text: 'Confirm whether guest parking is available.', confirmed: false },
-  { icon: 'luggage', title: 'Luggage storage', text: 'Confirm.', confirmed: false },
-  { icon: 'shirt', title: 'Laundry', text: 'Confirm.', confirmed: false },
-  { icon: 'glass', title: 'Wendy Juice Shop', text: 'Named on the entrance sign — confirm whether it is part of the guest house and should be featured.', confirmed: false },
+  { icon: 'car', title: 'Parking', text: 'Listings conflict (Booking.com: none; Agoda/Hostelworld: free).', confirmed: false },
+  { icon: 'plane', title: 'Airport transfer', text: 'Listings conflict; also confirm which airport (PHH or the old domestic PKR).', confirmed: false },
+  { icon: 'clock', title: 'Check-in / check-out', text: 'Times differ across listings (12:00/11:30, 12:00/12:00, 11:00/12:00).', confirmed: false },
+  { icon: 'shirt', title: 'Laundry', text: 'Booking.com only (extra charge).', confirmed: false },
+  { icon: 'coffee', title: 'Breakfast included?', text: 'Agoda says free; Booking.com room data says not included.', confirmed: false },
 ]
 
-/**
- * ROOMS — SAMPLE CONTENT.
- * Room names, categories, capacities, bed set-ups and rates have NOT been
- * confirmed. Each room is marked `demo: true`, which shows a "Sample listing"
- * tag on the site. Replace the values and set `demo: false`.
- *
- * - `capacity`, `beds`, `rate`: null shows "To be confirmed" / "Contact for rates".
- * - `amenities`: confirmed in-room amenities only.
- * - `seenInPhotos`: plain observations of what the photos show.
- * - Grouping photos 2 & 3 under one room is a guess (they appear to be the
- *   same room from opposite ends) — please confirm.
- * - `videos`: walk-throughs matched to rooms by their furniture (Room One's
- *   armchairs and painting; Room Two's sofa, mirror and window) — please confirm.
- * - In the guest-facing view unknown facts are simply left out; "To be
- *   confirmed" notes and the "Sample listing" tag only appear in editor preview.
- */
-export const rooms = [
-  {
-    id: 'room-one',
-    demo: true,
-    name: 'Room One',
-    description: 'A calm room with a double bed, a pair of red armchairs and a curtained window.',
-    capacity: null, // e.g. '2 adults'
-    beds: null, // e.g. '1 double bed'
-    rate: null, // e.g. 'From NPR 2,500 per night'
-    amenities: [],
-    seenInPhotos: ['Double bed', 'Two armchairs', 'Curtained window', 'Ceiling fan', 'Framed artwork'],
-    photos: [photos.roomDoubleArmchairs],
-    videos: [videos.roomOneWalkthrough],
-  },
-  {
-    id: 'room-two',
-    demo: true,
-    name: 'Room Two',
-    description: 'A double and a single bed, a cushioned sofa, and a desk with a mirror.',
-    capacity: null,
-    beds: null,
-    rate: null,
-    amenities: [],
-    seenInPhotos: ['Double bed', 'Single bed', 'Sofa seat', 'Desk and mirror', 'Attached bathroom', 'Ceiling fan'],
-    photos: [photos.roomDoubleSingleWindow, photos.roomDoubleSingleBathroom],
-    videos: [videos.roomTwoWalkthrough],
-  },
-  {
-    id: 'room-three',
-    demo: true,
-    name: 'Room Three',
-    description: 'A double and a single bed, an armchair in the corner and a desk beneath a wooden mirror.',
-    capacity: null,
-    beds: null,
-    rate: null,
-    amenities: [],
-    seenInPhotos: ['Double bed', 'Single bed', 'Armchair', 'Desk and mirror', 'Attached bathroom', 'Ceiling fan'],
-    photos: [photos.roomDoubleSingleDesk],
-  },
-  {
-    id: 'room-four',
-    demo: true,
-    name: 'Room Four',
-    description: 'Two single beds with a bedside table between them and full-length curtains.',
-    capacity: null,
-    beds: null,
-    rate: null,
-    amenities: [],
-    seenInPhotos: ['Two single beds', 'Bedside table', 'Wall light', 'Ceiling fan'],
-    photos: [photos.roomTwoSingles],
-  },
-]
-
-// Social profiles: { label: 'Instagram', url: 'https://…' }. Hidden while empty.
+// Social profiles: { label: 'Instagram', url: 'https://…' }. None found online — hidden while empty.
 export const social = []
 
 // Policy pages: { label: 'Cancellation policy', url: '/policies/cancellation.html' }. Hidden while empty.

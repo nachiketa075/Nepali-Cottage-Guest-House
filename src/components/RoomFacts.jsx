@@ -1,16 +1,32 @@
+import { pricing } from '../data/property.js'
 import { cn } from '../lib/cn.js'
 import { isPreview } from '../lib/preview.js'
+import { formatAmount, rateNeedsNote, rateNote } from '../lib/pricing.js'
 
-/**
- * Guests / beds / rate. Guests only see facts that are known (the rate falls
- * back to "Contact for rates"); editor preview also lists what is unconfirmed.
- */
+/** Owner-supplied price, with an honest note until currency and basis are confirmed. */
+export function RoomRate({ room, size = 'lg', className, showNote = true }) {
+  const amount = formatAmount(room.rate)
+  if (!amount) return <p className={cn('text-ink-soft', className)}>Contact for rates</p>
+  return (
+    <div className={className}>
+      <p className="text-[0.66rem] font-semibold uppercase tracking-[0.18em] text-ink-soft">Rate</p>
+      <p className="mt-1 flex flex-wrap items-baseline gap-x-2">
+        <span className={cn('font-serif leading-none text-ink', size === 'lg' ? 'text-[2.6rem]' : 'text-[2rem]')}>{amount}</span>
+        {pricing.basis && <span className="text-sm text-ink-soft">{pricing.basis}</span>}
+      </p>
+      {showNote && rateNeedsNote && <p className="mt-2 max-w-sm text-sm leading-snug text-ink-soft">{rateNote}</p>}
+    </div>
+  )
+}
+
+/** Guests / beds / size: only what is known (editor preview also shows the gaps). */
 export function RoomFacts({ room, className }) {
   const facts = [
     { label: 'Guests', value: room.capacity },
     { label: 'Beds', value: room.beds },
-    { label: 'Rate', value: room.rate ?? 'Contact for rates' },
+    { label: 'Size', value: room.size },
   ].filter((f) => f.value || isPreview)
+  if (!facts.length) return null
   return (
     <dl
       className={cn(
@@ -31,45 +47,19 @@ export function RoomFacts({ room, className }) {
   )
 }
 
-export function SeenInPhotos({ items, className }) {
+export function FeatureList({ items, title, className, columns = 1 }) {
   if (!items?.length) return null
   return (
     <div className={className}>
-      <h4 className="text-[0.66rem] font-semibold uppercase tracking-[0.18em] text-ink-soft">Seen in the photos &amp; video</h4>
-      <ul className="mt-3 flex flex-wrap gap-2">
+      {title && <h4 className="text-[0.66rem] font-semibold uppercase tracking-[0.18em] text-ink-soft">{title}</h4>}
+      <ul className={cn('mt-3 grid gap-x-6 gap-y-2 text-[0.95rem]', columns === 2 && 'sm:grid-cols-2')}>
         {items.map((item) => (
-          <li key={item} className="rounded-full border border-line-strong/70 px-3 py-1 text-sm">
+          <li key={item} className="flex items-start gap-3">
+            <span aria-hidden="true" className="mt-[0.6rem] size-1 shrink-0 rotate-45 bg-gold" />
             {item}
           </li>
         ))}
       </ul>
     </div>
-  )
-}
-
-export function RoomAmenities({ items, className }) {
-  if (!items?.length) return null
-  return (
-    <div className={className}>
-      <h4 className="text-[0.66rem] font-semibold uppercase tracking-[0.18em] text-ink-soft">In the room</h4>
-      <ul className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1.5 text-[0.95rem]">
-        {items.map((item) => (
-          <li key={item} className="flex items-center gap-2.5">
-            <span aria-hidden="true" className="size-1 rotate-45 bg-gold" />
-            {item}
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
-}
-
-/** Editor-preview marker for rooms whose details are not yet confirmed. */
-export function SampleTag() {
-  if (!isPreview) return null
-  return (
-    <span className="inline-flex items-center rounded-full border border-dashed border-gold-ink/60 px-2.5 py-0.5 font-mono text-[0.64rem] font-semibold uppercase tracking-[0.12em] text-gold-ink">
-      Sample listing · details to confirm
-    </span>
   )
 }

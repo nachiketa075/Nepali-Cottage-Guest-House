@@ -104,7 +104,7 @@ export function Gallery() {
 const zoom =
   'transition-transform duration-[1.2s] ease-[var(--ease-soft)] group-hover:scale-[1.035] motion-reduce:transition-none motion-reduce:group-hover:scale-100'
 
-function GalleryTile({ item, aspect, featured, onOpen }) {
+export function GalleryTile({ item, aspect, featured, onOpen }) {
   const video = isVideo(item)
   return (
     <div className={cn('group relative h-full w-full overflow-hidden rounded-md bg-line', aspect)}>

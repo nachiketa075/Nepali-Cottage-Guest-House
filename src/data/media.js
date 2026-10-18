@@ -181,6 +181,21 @@ export const heroVideo = {
 }
 
 /**
+ * ROOM MEDIA — current photos and walk-throughs of the guest rooms, shown together
+ * under "Inside the rooms". Not assigned to Standard or Deluxe: no evidence yet
+ * links any of these to a category (see docs/research-notes.md). Once the owner
+ * confirms, add them to that room's `photos` / `videos` in property.js.
+ */
+export const roomMedia = [
+  videos.roomOneWalkthrough,
+  photos.roomDoubleSingleWindow,
+  photos.roomDoubleArmchairs,
+  photos.roomDoubleSingleBathroom,
+  photos.roomDoubleSingleDesk,
+  photos.roomTwoSingles,
+]
+
+/**
  * GALLERY ORDER. Images and videos can be mixed.
  * `featured: true` makes a tile span two columns and two rows on larger screens.
  *

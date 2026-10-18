@@ -1,5 +1,6 @@
 import { enquiry, property, rooms } from '../data/property.js'
 import { nightsBetween, todayISO, formatDate } from './dates.js'
+import { rateLabel } from './pricing.js'
 
 export const emptyEnquiry = {
   name: '',
@@ -60,7 +61,7 @@ export function enquiryText(values) {
     `Check-out: ${formatDate(values.checkOut)} (${nights} night${nights === 1 ? '' : 's'})`,
     `Guests: ${values.adults} adult${values.adults === '1' ? '' : 's'}${Number(values.children) ? `, ${values.children} child${values.children === '1' ? '' : 'ren'}` : ''}`,
   ]
-  if (room) lines.push(`Room of interest: ${room.name}`)
+  if (room) lines.push(`Room of interest: ${room.name}${room.rate ? ` (listed rate ${rateLabel(room)})` : ''}`)
   if (values.message.trim()) lines.push('', values.message.trim())
   return lines.join('\n')
 }

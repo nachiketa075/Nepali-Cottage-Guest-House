@@ -74,9 +74,9 @@ export function StayGlimpse() {
             <div className="grid gap-10 lg:grid-cols-12">
               <Reveal className="lg:col-span-4">
                 <h3 className="font-serif text-[2rem] leading-tight">At the guest house</h3>
-                <p className="mt-3 max-w-xs text-[0.95rem] text-ivory/70">As seen in the photographs and footage.</p>
+                <p className="mt-3 max-w-xs text-[0.95rem] text-ivory/70">Facilities for every guest.</p>
               </Reveal>
-              <ul className="grid gap-x-10 gap-y-10 sm:grid-cols-3 lg:col-span-8">
+              <ul className="grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:col-span-8 xl:grid-cols-3">
                 {confirmed.map((a, i) => (
                   <Reveal as="li" key={a.title} delay={i * 0.06}>
                     <Icon name={a.icon} className="size-7 text-gold-soft" />

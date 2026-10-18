@@ -11,7 +11,7 @@ export function Intro() {
         <Reveal className="relative lg:col-span-6 xl:col-span-6">
           <div className="group overflow-hidden rounded-md">
             <ResponsiveImage
-              image={intro.image}
+              image={photos.gardenFromAbove}
               sizes="(min-width: 1024px) 46vw, 100vw"
               className="aspect-[4/5] sm:aspect-[5/4] lg:aspect-[4/5]"
               imgClassName="transition-transform duration-[1.2s] ease-[var(--ease-soft)] group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"

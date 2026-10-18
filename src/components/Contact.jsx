@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Check, Copy, Info } from 'lucide-react'
 import { enquiry, rooms, contact } from '../data/property.js'
+import { rateLabel, rateNeedsNote, rateNote } from '../lib/pricing.js'
 import { addDaysISO, nightsBetween, todayISO } from '../lib/dates.js'
 import { useEnquiry } from '../lib/EnquiryContext.jsx'
 import { enquiryText, submitEnquiry, validateEnquiry } from '../lib/enquiry.js'
@@ -62,6 +63,7 @@ export function Contact() {
   }
 
   const errorKeys = FIELD_ORDER.filter((k) => errors[k])
+  const selectedRoom = rooms.find((r) => r.id === values.roomId)
   const nights = nightsBetween(values.checkIn, values.checkOut)
 
   const fieldProps = (field) => ({
@@ -70,7 +72,12 @@ export function Contact() {
     value: values[field],
     onChange: update(field),
     'aria-invalid': errors[field] ? true : undefined,
-    'aria-describedby': cn(errors[field] && `enquiry-${field}-error`, field === 'contact' && 'enquiry-contact-hint') || undefined,
+    'aria-describedby':
+      cn(
+        errors[field] && `enquiry-${field}-error`,
+        field === 'contact' && 'enquiry-contact-hint',
+        field === 'roomId' && selectedRoom?.rate && 'enquiry-roomId-hint',
+      ) || undefined,
   })
   const err = (field) =>
     errors[field] && (
@@ -98,13 +105,19 @@ export function Contact() {
               <div>
                 <h3 className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-ink-soft">Or contact us directly</h3>
                 <ContactActions className="mt-4" />
+                {!contact.whatsapp.verified && (
+                  <Placeholder title="WhatsApp" className="mt-5">
+                    <p>
+                      Hidden until the owner confirms {contact.phone.display} takes WhatsApp (set{' '}
+                      <code>whatsapp.verified: true</code> in <code>src/data/property.js</code>).
+                    </p>
+                  </Placeholder>
+                )}
               </div>
             ) : (
               <Placeholder title="Call & WhatsApp">
                 <p>
-                  Call and WhatsApp buttons appear once a phone number is verified. The entrance sign in the supplied
-                  photo shows <strong>{contact.phone.display}</strong> (shared with Wendy Juice Shop) — confirm it is
-                  the guest house line and whether it takes WhatsApp, then set <code>verified: true</code> in{' '}
+                  Call and WhatsApp buttons appear once a contact number is verified in{' '}
                   <code>src/data/property.js</code>.
                 </p>
               </Placeholder>
@@ -211,9 +224,15 @@ export function Contact() {
                   {rooms.map((r) => (
                     <option key={r.id} value={r.id}>
                       {r.name}
+                      {r.rate ? ` — ${rateLabel(r)}` : ''}
                     </option>
                   ))}
                 </select>
+                {selectedRoom?.rate && (
+                  <p id="enquiry-roomId-hint" className="mt-1.5 text-xs leading-snug text-ink-soft">
+                    Listed rate {rateLabel(selectedRoom)}.{rateNeedsNote ? ` ${rateNote}` : ''}
+                  </p>
+                )}
               </div>
               <div className="sm:col-span-2">
                 <label htmlFor="enquiry-message" className="field-label">
