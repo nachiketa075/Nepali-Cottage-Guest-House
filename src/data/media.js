@@ -126,6 +126,14 @@ export const photos = {
     caption: 'The garden path on a sunny day, with a hammock on the lawn.',
     category: 'garden',
   }),
+  guestsGroupGarden: photo({
+    file: 'guests-group-garden',
+    width: 862,
+    height: 640,
+    alt: 'A group of guests posing on the stone path in the garden, in front of the white-and-red guest house building and beside the Nepali Cottage Guest House sign',
+    caption: 'A group of guests in the garden in front of the guest house.',
+    category: 'exterior',
+  }),
 }
 
 /**
@@ -242,6 +250,7 @@ export const gallery = [
   photos.gardenPath,
   photos.gardenStoneCottages,
   photos.buildingPathRain,
+  photos.guestsGroupGarden,
   photos.roomDoubleArmchairs,
   photos.roomDoubleSingleWindow,
   photos.roomDoubleSingleBathroom,

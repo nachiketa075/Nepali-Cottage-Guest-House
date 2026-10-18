@@ -153,9 +153,9 @@ price.
   - `garden-path-stone-cottages`
 - **Duplicates skipped:** eight more supplied photos were identical to ones already on the site. One rain photo was
   sent twice.
-- **Not published:** one photo of a group of guests in front of the sign (862×640). It shows identifiable people and
-  is low-resolution, so it is kept in `media-review/owner-supplied/` (git-ignored) until the owner confirms the
-  guests' consent.
+- **Group photo:** one photo of a group of guests in front of the sign (862×640) was held back at first because it
+  shows identifiable people. It was published as `guests-group-garden` (WebP at 640 and 862 px) on 18 Oct 2026 at
+  the owner's request. The owner is responsible for the guests' consent.
 - **Identity:** the building in these photos matches the Booking.com listing photos 98591794, 230048048 and
   384036495, which is a further identity match.
 
